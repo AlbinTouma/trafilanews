@@ -30,7 +30,7 @@ class TrafilaNews:
                 yield browser
                 browser.close()
 
-        def ingest_feed(self, url: str) -> Generator[str, None, None]:
+        def ingest_feed(self) -> Generator[str, None, None]:
               with self._playwright_browser() as browser, self._httpx_client() as client:
                     for i in IngestFeed(self.url, browser=browser, client=client).stream_articles():
                         yield i    
@@ -48,7 +48,7 @@ if __name__ == "__main__":
         bbc_rss_url = "https://feeds.bbci.co.uk/news/rss.xml"
         
         trafilanews = TrafilaNews(google_rss_url, playwright=True)
-        ingest_feed = trafilanews.ingest_feed(google_rss_url)
+        ingest_feed = trafilanews.ingest_feed()
         for i in ingest_feed:
             print(i)
               
